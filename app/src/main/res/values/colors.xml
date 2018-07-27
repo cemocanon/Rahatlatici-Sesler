@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#34314c</color>
+    <color name="colorPrimaryDark">#474368</color>
+    <color name="colorAccent">#ff7473</color>
+    <color name="tobbar_bg">#f4f4f4</color>
+</resources>
