@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 27
+    useLibrary  'org.apache.http.legacy'
     defaultConfig {
         applicationId "com.teknasyon.rahatlatcsesler"
         minSdkVersion 19
@@ -36,5 +37,15 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
 
     // Glide bitti
+
+    compile 'org.adw.library:discrete-seekbar:1.0.1' //Progresbar Kütüphanesi
+
+    //  (Jsondan veri çekmek için kütüphane kalıbı)
+    compile 'org.apache.httpcomponents:httpclient-android:4.3.5.1'
+
+
+
+    //  bitti
+
 
 }

@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#474368</color>
     <color name="colorAccent">#ff7473</color>
     <color name="tobbar_bg">#f4f4f4</color>
+    <color name="prgwhite">#ffffff</color>
 </resources>

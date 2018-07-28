@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="5dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="125dp">
+
+        <ImageView
+            android:id="@+id/sarki_resim"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/favori_trans" />
+
+        <TextView
+            android:id="@+id/sarki_adi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="21dp"
+            android:layout_marginTop="21dp"
+            android:text="Kuş"
+            android:textColor="@android:color/white" />
+
+        <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="184dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignStart="@+id/katagori_adi"
+            android:layout_centerVertical="true"
+            app:dsb_indicatorColor="@color/colorPrimaryDark"
+            app:dsb_indicatorPopupEnabled="false"
+            app:dsb_max="100dp"
+            app:dsb_min="0dp"
+            app:dsb_progressColor="@color/colorPrimary"
+            app:dsb_trackColor="@color/prgwhite"
+            app:dsb_value="50dp" />
+
+
+        <ImageView
+            android:id="@+id/playpause_btn"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@+id/seekBar"
+            android:layout_marginEnd="21dp"
+            app:srcCompat="@drawable/play" />
+
+        <ImageView
+            android:id="@+id/favorisec_img_btn"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignStart="@+id/playpause_btn"
+            android:layout_alignTop="@+id/sarki_adi"
+            android:layout_weight="1"
+            android:src="@drawable/favori_aktif" />
+    </RelativeLayout>
+
+</LinearLayout>
