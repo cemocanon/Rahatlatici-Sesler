@@ -1,7 +1,10 @@
 package com.teknasyon.rahatlatcsesler;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +26,8 @@ import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Handler;
 
 public class Kitaplik_icerik_Adaptor extends RecyclerView.Adapter<Kitaplik_icerik_Adaptor.ViewHolder> {
     private Context mContext;
@@ -31,8 +36,7 @@ public class Kitaplik_icerik_Adaptor extends RecyclerView.Adapter<Kitaplik_iceri
     public Kitaplik_icerik_Adaptor(Context context, ArrayList<HashMap<String, String>> muzikler) {
         this.muzikler = muzikler;
         this.mContext=context;
-        //   this.listener = listener;
-    }
+     }
 
 
     @Override
@@ -46,6 +50,7 @@ public class Kitaplik_icerik_Adaptor extends RecyclerView.Adapter<Kitaplik_iceri
         return view_holder;
     }
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        public static Map<Integer, MediaPlayer> mediaPlayerMap = new HashMap<Integer, MediaPlayer>();
 
 
         public TextView muzik_adi;
@@ -110,23 +115,65 @@ public class Kitaplik_icerik_Adaptor extends RecyclerView.Adapter<Kitaplik_iceri
         holder.playpause_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // Toast.makeText(mContext, muzikler.get(position).get("adi"), Toast.LENGTH_SHORT).show();
+
                 try {
 
+                    final ProgressDialog pDialog = new ProgressDialog(mContext);
+                    pDialog.setTitle("Lütfen Bekleyin...");
+                    pDialog.setMessage("Ses Dosyası Çekiliyor");
+                    pDialog.setIndeterminate(false);
+                    pDialog.setCancelable(true);
+                    pDialog.show();
 
-                if(!holder.mediaPlayer.isPlaying()){
-                    holder.playpause_btn.setImageResource(R.drawable.pause);
+
+                    if(!holder.mediaPlayer.isPlaying()) {
+                        holder.playpause_btn.setImageResource(R.drawable.pause);
+
+
                     holder.mediaPlayer = new MediaPlayer();
+
+                        holder.mediaPlayerMap.put(position, holder.mediaPlayer );
+
                     holder.mediaPlayer.setDataSource(muzikler.get(position).get(FAVORI_url).toString());
-                    holder.mediaPlayer.prepare();
+
                     float volume = (float) (1 - (Math.log(100 - holder.seekBar.getProgress()) / Math.log(100)));
                     holder.mediaPlayer.setVolume(volume, volume);
                     holder.mediaPlayer.setLooping(true);
-                    holder.mediaPlayer.start();
+                    holder.mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                        @Override
+                        public void onPrepared(MediaPlayer mp) {
+
+                            mp.start();
+                            Thread timerThread = new Thread(){
+                                public void run(){
+
+                                    int currentPosition = holder.mediaPlayer.getCurrentPosition();
+
+                                    if (currentPosition > 0)
+                                        pDialog.dismiss();
+
+                                }
+                            };
+                            timerThread.start();
+                        }
+                    });
+                    holder.mediaPlayer.prepareAsync();
                 }else {
 
                     holder.playpause_btn.setImageResource(R.drawable.play);
                     holder.mediaPlayer.pause();
+                        Thread timerThread = new Thread(){
+                            public void run(){
+
+                                int currentPosition = holder.mediaPlayer.getCurrentPosition();
+
+                                if (currentPosition > 0)
+                                    pDialog.dismiss();
+
+                            }
+                        };
+                        timerThread.start();
+
                 }
 
 

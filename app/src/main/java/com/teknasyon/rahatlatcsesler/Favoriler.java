@@ -2,8 +2,13 @@ package com.teknasyon.rahatlatcsesler;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -30,13 +35,49 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Favoriler extends AppCompatActivity implements View.OnClickListener{
+
+    //internet kontrolü başla
+
+    public boolean isOnline()
+    {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+
+        if (netInfo != null && netInfo.isConnectedOrConnecting())
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public void connectionMessage()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setMessage("Lütfen internet bağlantınızı kontrol ediniz.").setPositiveButton("Tamam", new DialogInterface.OnClickListener()
+        {
+            public void onClick(DialogInterface dialog, int which)
+            {
+
+                finish();
+
+            }
+        });
+
+        final AlertDialog alert = builder.create();
+        alert.show();
+    }
+    //internet kontrülü bitiş
+
+
     ImageView favori_img_btn,kitaplik_img_btn;
     TextView kitaplik_txt,favori_txt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.favoriler);
-
+        db = new Database(Favoriler.this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         TextView tobbar_txt= findViewById(R.id.tobbar_txt);
@@ -91,7 +132,24 @@ public class Favoriler extends AppCompatActivity implements View.OnClickListener
     }
 
     private void Favori_kontrol() {
-        Database db = new Database(Favoriler.this);
+
+
+        if(!isOnline())
+        {
+            connectionMessage();
+        }
+        else {
+
+        SharedPreferences mPreferences = this.getSharedPreferences("teksefercalistir", Context.MODE_PRIVATE);
+        Boolean    firstTime = mPreferences.getBoolean("teksefercalistir", true);
+        if (firstTime) {
+            SharedPreferences.Editor editor = mPreferences.edit();
+            editor.putBoolean("teksefercalistir", false);
+            editor.commit();
+            new Favorileri_getir().execute();
+        }else{
+
+
         int count = db.getRowCount();// databasedeki favori row sayisi
         if(count == 0){//0 dan fazla ise favori var demektir. o zaman favorilere yönlendiriyruz. Favoriler boş ise Kitaplığa yönlendiriyoruz.
 
@@ -101,15 +159,18 @@ public class Favoriler extends AppCompatActivity implements View.OnClickListener
                         finish();
 
         }else {
-           
+
             Muzikler.addAll(db.Favori_detay()) ;
+        }
         }
 
 
-        new Favorileri_getir().execute();
+        }
+
     }
 
 
+    Database db ;
 
     ProgressDialog pDialog;
     PostClass post = new PostClass();
@@ -146,20 +207,21 @@ public class Favoriler extends AppCompatActivity implements View.OnClickListener
                 Muzikler.clear();
                 if (!json.equals("")) {
                     JSONObject cevap = new JSONObject(json);
-                    HashMap servis;
+                    HashMap muzikmap;
                     // Phone number is agin JSON Object
                     JSONArray cast = cevap.getJSONArray("success");
                     for (int i = 0; i < cast.length(); i++) {
-                        servis = new HashMap<>();
+                        muzikmap = new HashMap<>();
                         JSONObject actor = cast.getJSONObject(i);
                         sonuc=1;
 
-                        servis.put(FAVORI_muzikid  , actor.getString("id"));
-                        servis.put(FAVORI_adi      , actor.getString("title"));
-                        servis.put(FAVORI_url      , actor.getString("url"));
-                        servis.put(FAVORI_resim    , actor.getString("image"));
-                        servis.put("catid"  , actor.getString("catid"));
-                        Muzikler.add(servis);
+                        muzikmap.put(FAVORI_muzikid  , actor.getString("id"));
+                        muzikmap.put(FAVORI_adi      , actor.getString("title"));
+                        muzikmap.put(FAVORI_url      , actor.getString("url"));
+                        muzikmap.put(FAVORI_resim    , actor.getString("image"));
+                        muzikmap.put("catid"  , actor.getString("catid"));
+                        Muzikler.add(muzikmap);
+                        db.Favori_ekle(muzikmap.get(FAVORI_adi).toString(),muzikmap.get(FAVORI_url).toString(),muzikmap.get(FAVORI_muzikid).toString(),muzikmap.get(FAVORI_resim).toString());
 
                     }
                 }
@@ -201,4 +263,21 @@ public class Favoriler extends AppCompatActivity implements View.OnClickListener
             });
         }
     }
+    @Override
+    public void onPause(){
+        for (int i = 0; i < Favori_icerik_Adaptor.ViewHolder.mediaPlayerMap.size(); i++) {
+
+        if (Favori_icerik_Adaptor.ViewHolder.mediaPlayerMap!=null){
+        if(Favori_icerik_Adaptor.ViewHolder.mediaPlayerMap.get(i).isPlaying()) {
+            Favori_icerik_Adaptor.ViewHolder.mediaPlayerMap.get(i).stop();
+        }
+        }
+        }
+        finish();
+        //media player stops
+        super.onPause();
+    }
+
+
+
 }

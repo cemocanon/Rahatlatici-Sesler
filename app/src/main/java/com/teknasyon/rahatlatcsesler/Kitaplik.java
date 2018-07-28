@@ -2,8 +2,11 @@ package com.teknasyon.rahatlatcsesler;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -27,9 +30,46 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Kitaplik extends AppCompatActivity   implements View.OnClickListener {
+
+
+    //internet kontrolü başla
+
+    public  boolean isOnline()
+    {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+
+        if (netInfo != null && netInfo.isConnectedOrConnecting())
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public void connectionMessage()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setMessage("Lütfen internet bağlantınızı kontrol ediniz.").setPositiveButton("Tamam", new DialogInterface.OnClickListener()
+        {
+            public void onClick(DialogInterface dialog, int which)
+            {
+
+                finish();
+
+            }
+        });
+
+        final AlertDialog alert = builder.create();
+        alert.show();
+    }
+    //internet kontrülü bitiş
+
     ArrayList<HashMap<String, String>> Katagoriler = new ArrayList<HashMap<String, String>>();
 ImageView kitaplik_img_btn,favori_img_btn;
     Katagori_Adaptor adapter_items;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,11 +79,6 @@ ImageView kitaplik_img_btn,favori_img_btn;
         TextView tobbar_txt= findViewById(R.id.tobbar_txt);
         tobbar_txt.setText(getString(R.string.kitaplik));
 
-        HashMap katagoriveriler  = new HashMap<>();
-        katagoriveriler.put("id","1");
-        katagoriveriler.put("adi","Kuş");
-        katagoriveriler.put("url","http://www.noagergitavan.com/wp-content/uploads/2015/08/fa38eshutterstock_136529732-Bahar-dallari-uzerinde-kucuk-kus.jpg");
-        Katagoriler.add(katagoriveriler);
 
         RecyclerView   recycler_view = findViewById(R.id.katagori_recyview);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -59,8 +94,13 @@ ImageView kitaplik_img_btn,favori_img_btn;
         favori_img_btn.setImageResource(R.drawable.btn_pasif);
         kitaplik_img_btn.setImageResource(R.drawable.btn_aktif);
         favori_img_btn.setOnClickListener(this);
-
+        if(!isOnline())
+        {
+            connectionMessage();
+        }
+        else {
         new kitaplikicerik_getir().execute();
+        }
     }
 
 
@@ -165,4 +205,6 @@ ImageView kitaplik_img_btn,favori_img_btn;
                 break;
     }
     }
+
+    
 }

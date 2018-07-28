@@ -75,6 +75,7 @@ public class Katagori_Adaptor extends RecyclerView.Adapter<Katagori_Adaptor.View
             @Override
             public void onClick(View v) {
                // Toast.makeText(mContext, Katagoriler.get(position).get("adi"), Toast.LENGTH_SHORT).show();
+
                 Intent intent = new Intent(mContext, Kitaplik_icerik.class);
                 intent.putExtra(Kitaplik_icerik.katagori_str, Katagoriler.get(position));
                 mContext.startActivity(intent);

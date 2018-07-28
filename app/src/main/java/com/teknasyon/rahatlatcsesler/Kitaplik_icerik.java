@@ -2,8 +2,11 @@ package com.teknasyon.rahatlatcsesler;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,6 +29,40 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Kitaplik_icerik extends AppCompatActivity {
+
+    //internet kontrolü başla
+
+    public  boolean isOnline()
+    {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+
+        if (netInfo != null && netInfo.isConnectedOrConnecting())
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public void connectionMessage()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setMessage("Lütfen internet bağlantınızı kontrol ediniz.").setPositiveButton("Tamam", new DialogInterface.OnClickListener()
+        {
+            public void onClick(DialogInterface dialog, int which)
+            {
+
+                finish();
+
+            }
+        });
+
+        final AlertDialog alert = builder.create();
+        alert.show();
+    }
+    //internet kontrülü bitiş
 
     public static final String katagori_str = "katagori";
     ArrayList<HashMap<String, String>> Muzikler = new ArrayList<HashMap<String, String>>();
@@ -67,14 +104,18 @@ public class Kitaplik_icerik extends AppCompatActivity {
             Katagori_ID = getIntent().getStringExtra(katagori_str);
 
             Katagori= (HashMap<String, String>)getIntent().getExtras().getSerializable(katagori_str);
-           // Toast.makeText(this, Katagori.get("id"), Toast.LENGTH_SHORT).show();
 
         }else {
             Toast.makeText(this, getString(R.string.katagoriyok), Toast.LENGTH_SHORT).show();
             finish();
         }
-
-        new kitaplikicerik_getir().execute();
+        if(!isOnline())
+        {
+            connectionMessage();
+        }
+        else {
+            new kitaplikicerik_getir().execute();
+        }
     }
 
 
@@ -96,8 +137,6 @@ public class Kitaplik_icerik extends AppCompatActivity {
         Integer sonuc=0;
 
         protected Void doInBackground(Void... unused) {
-
-            //String sifre_sha1 = Fonksiyonlar.sha1(sifre); //istersek sha1 şifreleme fonksiyonunu kullanabiliriz
 
             List<NameValuePair> params = new ArrayList<NameValuePair>();
 
@@ -141,12 +180,8 @@ public class Kitaplik_icerik extends AppCompatActivity {
             return null;
         }
 
-        // Sonuç başarılı ise bu kod çalışmıcak çünkü Main activitye yönlenmiş durumda
-        protected void onPostExecute(Void unused) {
-            // closing progress dialog
-            pDialog.dismiss();
-            //  categoryAdapter.notifyDataSetChanged();
-            // updating UI from Background Thread
+         protected void onPostExecute(Void unused) {
+             pDialog.dismiss();
             runOnUiThread(new Runnable() {
                 public void run() {
                     if (sonuc == 0) {// Sonuç başarılı değil ise
@@ -171,4 +206,19 @@ public class Kitaplik_icerik extends AppCompatActivity {
             });
         }
     }
+    @Override
+    public void onPause(){
+        for (int i = 0; i < Kitaplik_icerik_Adaptor.ViewHolder.mediaPlayerMap.size(); i++) {
+
+            if (Kitaplik_icerik_Adaptor.ViewHolder.mediaPlayerMap!=null){
+                if(Kitaplik_icerik_Adaptor.ViewHolder.mediaPlayerMap.get(i).isPlaying()) {
+                    Kitaplik_icerik_Adaptor.ViewHolder.mediaPlayerMap.get(i).stop();
+                }
+            }
+        }
+        finish();
+        //media player stops
+        super.onPause();
+    }
+
 }
