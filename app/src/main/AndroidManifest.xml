@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.teknasyon.rahatlatcsesler">
 
+    <!-- İnternete erişme izni verdik -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- İnternet çıkış izni verildi. -->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -17,9 +22,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Anasayfa"
+            android:name=".Kitaplik"
             android:label="@string/title_activity_anasayfa"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Favoriler"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Kitaplik_icerik"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

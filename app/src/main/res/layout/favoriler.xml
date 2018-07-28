@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Kitaplik">
-
+    tools:context=".Favoriler">
 
     <include
         layout="@layout/toolbar"
@@ -81,6 +80,5 @@
                 android:textStyle="bold" />
         </RelativeLayout>
     </LinearLayout>
-
 
 </LinearLayout>

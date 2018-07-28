@@ -3,4 +3,5 @@
     <string name="title_activity_anasayfa">Anasayfa</string>
     <string name="favorilerim">FAVORİLERİM</string>
     <string name="kitaplik">KİTAPLIK</string>
+    <string name="katagoriyok">Katagori Seçiminde Hata Oldu. Tekrar Deneyin.</string>
 </resources>
