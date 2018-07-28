@@ -30,8 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Kitaplik extends AppCompatActivity   implements View.OnClickListener {
-
-
+ 
     //internet kontrolü başla
 
     public  boolean isOnline()
