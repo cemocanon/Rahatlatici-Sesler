@@ -20,3 +20,7 @@
         compile 'org.apache.httpcomponents:httpclient-android:4.3.5.1'  //  (Jsondan veri transferi için kütüphane kalıbı)
 
  
+
+Geliştirmeye Açıktır.
+
+[Sorularınız için burdan ulaşabilirisiniz.](mailto:cemilyesil@hotmail.com.tr "Sorularınız için burdan ulaşabilirisiniz.")
