@@ -131,14 +131,14 @@ public class Kitaplik_icerik_Adaptor extends RecyclerView.Adapter<Kitaplik_iceri
 
                     holder.mediaPlayer = new MediaPlayer();
 
-                        holder.mediaPlayerMap.put(position, holder.mediaPlayer );
-
                     holder.mediaPlayer.setDataSource(muzikler.get(position).get(FAVORI_url).toString());
 
                     float volume = (float) (1 - (Math.log(100 - holder.seekBar.getProgress()) / Math.log(100)));
                     holder.mediaPlayer.setVolume(volume, volume);
                     holder.mediaPlayer.setLooping(true);
-                    holder.mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                        holder.mediaPlayerMap.put(position, holder.mediaPlayer );
+
+                        holder.mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                         @Override
                         public void onPrepared(MediaPlayer mp) {
 

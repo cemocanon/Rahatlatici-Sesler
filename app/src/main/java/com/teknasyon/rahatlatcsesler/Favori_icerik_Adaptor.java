@@ -140,12 +140,12 @@ public class Favori_icerik_Adaptor extends RecyclerView.Adapter<Favori_icerik_Ad
                         holder.mediaPlayer = new MediaPlayer();
 
 
-                        holder.mediaPlayerMap.put(position, holder.mediaPlayer );// listedeki mediplayerlı  map dizinine  atıyorum. böylelikle active içinden kontrol edebiliyorum.
                         holder.mediaPlayer.setDataSource(muzikler.get(position).get(FAVORI_url).toString());
 
                         float volume = (float) (1 - (Math.log(100 - holder.seekBar.getProgress()) / Math.log(100)));  // Seekbar değeri kadar müziğin sesini açıoyu
                         holder.mediaPlayer.setVolume(volume, volume);
                         holder.mediaPlayer.setLooping(true);
+                        holder.mediaPlayerMap.put(position, holder.mediaPlayer );// listedeki mediplayerlı  map dizinine  atıyorum. böylelikle active içinden kontrol edebiliyorum.
                         holder.mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                             @Override
                             public void onPrepared(MediaPlayer mp) {
