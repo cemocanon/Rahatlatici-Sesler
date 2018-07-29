@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Kitaplik extends AppCompatActivity   implements View.OnClickListener {
- 
+
     //internet kontrolü başla
 
     public  boolean isOnline()
@@ -98,15 +98,15 @@ ImageView kitaplik_img_btn,favori_img_btn;
             connectionMessage();
         }
         else {
-        new kitaplikicerik_getir().execute();
+        new kitaplik_getir().execute();  // İnternet var ise bilgileri çekiyoruz
         }
     }
 
 
 
     ProgressDialog pDialog;
-    PostClass post = new PostClass();
-    class kitaplikicerik_getir extends AsyncTask<Void, Void, Void> {
+    PostClass post = new PostClass();  // Post ve reguest metodlarını içeren klasımız
+    class kitaplik_getir extends AsyncTask<Void, Void, Void> {
 
 
         protected void onPreExecute() {
@@ -122,13 +122,11 @@ ImageView kitaplik_img_btn,favori_img_btn;
 
         protected Void doInBackground(Void... unused) {
 
-            //String sifre_sha1 = Fonksiyonlar.sha1(sifre); //istersek sha1 şifreleme fonksiyonunu kullanabiliriz
-
             List<NameValuePair> params = new ArrayList<NameValuePair>();
 
-            params.add(new BasicNameValuePair("user"  , "demo"));
-            params.add(new BasicNameValuePair("pass"     , "demo"));
-            params.add(new BasicNameValuePair("param"    , "category"));
+            params.add(new BasicNameValuePair("user"  , "demo"));// Json güvenliği için kullanıcı adı ve şifre yolluyorum. Bu kullanıcı adı ve şifre yanlış olduğunda bilgi vermeyecek.
+            params.add(new BasicNameValuePair("pass"     , "demo"));// Json güvenlik şifresi
+            params.add(new BasicNameValuePair("param"    , "category"));// Jsonda hangi sistemi çekeceğimi yazıyorum. Burda category kitaplık sayfasını geitiriyor. favorite Favorileri getircek.
 
             String json = post.httpPost(getString(R.string.favori_url), "POST", params, 20000);
 
@@ -140,8 +138,7 @@ ImageView kitaplik_img_btn,favori_img_btn;
                 if (!json.equals("")) {
                     JSONObject cevap = new JSONObject(json);
                     HashMap servis;
-                    // Phone number is agin JSON Object
-                    JSONArray cast = cevap.getJSONArray("success");
+                     JSONArray cast = cevap.getJSONArray("success");
                     for (int i = 0; i < cast.length(); i++) {
                         servis = new HashMap<>();
                         JSONObject actor = cast.getJSONObject(i);
@@ -163,18 +160,14 @@ ImageView kitaplik_img_btn,favori_img_btn;
             return null;
         }
 
-        // Sonuç başarılı ise bu kod çalışmıcak çünkü Main activitye yönlenmiş durumda
-        protected void onPostExecute(Void unused) {
-            // closing progress dialog
-            pDialog.dismiss();
-            //  categoryAdapter.notifyDataSetChanged();
-            // updating UI from Background Thread
-            runOnUiThread(new Runnable() {
+         protected void onPostExecute(Void unused) {
+             pDialog.dismiss();
+             runOnUiThread(new Runnable() {
                 public void run() {
                     if (sonuc == 0) {// Sonuç başarılı değil ise
                         AlertDialog alertDialog = new AlertDialog.Builder(Kitaplik.this).create();
-                        alertDialog.setTitle("Kitaplık müzikleri çekilemedi.");
-                        alertDialog.setMessage("Kitaplık Sayfasına Yönlendiriliceksiniz."); //Sonuc mesajıyla bilgilendiriyoruz.
+                        alertDialog.setTitle(" Sunucudua bir hata oluştu.");
+                        alertDialog.setMessage("Tekrar Deneyiniz.");
                         alertDialog.setCancelable(false);
                         alertDialog.setButton(RESULT_OK, "Tamam", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {

@@ -140,7 +140,7 @@ public class Favoriler extends AppCompatActivity implements View.OnClickListener
         }
         else {
 
-        SharedPreferences mPreferences = this.getSharedPreferences("teksefercalistir", Context.MODE_PRIVATE);
+        SharedPreferences mPreferences = this.getSharedPreferences("teksefercalistir", Context.MODE_PRIVATE);  // bu sayfa ilk çalıştırıldığında çalışacak olan kod. Ssitemden favori listesini bir kerelik çekecek.
         Boolean    firstTime = mPreferences.getBoolean("teksefercalistir", true);
         if (firstTime) {
             SharedPreferences.Editor editor = mPreferences.edit();
@@ -190,8 +190,6 @@ public class Favoriler extends AppCompatActivity implements View.OnClickListener
 
         protected Void doInBackground(Void... unused) {
 
-            //String sifre_sha1 = Fonksiyonlar.sha1(sifre); //istersek sha1 şifreleme fonksiyonunu kullanabiliriz
-
             List<NameValuePair> params = new ArrayList<NameValuePair>();
 
             params.add(new BasicNameValuePair("user"  , "demo"));
@@ -233,12 +231,8 @@ public class Favoriler extends AppCompatActivity implements View.OnClickListener
             return null;
         }
 
-        // Sonuç başarılı ise bu kod çalışmıcak çünkü Main activitye yönlenmiş durumda
-        protected void onPostExecute(Void unused) {
-            // closing progress dialog
-            pDialog.dismiss();
-          //  categoryAdapter.notifyDataSetChanged();
-            // updating UI from Background Thread
+         protected void onPostExecute(Void unused) {
+             pDialog.dismiss();
             runOnUiThread(new Runnable() {
                 public void run() {
                     if (sonuc == 0) {// Sonuç başarılı değil ise
@@ -265,7 +259,7 @@ public class Favoriler extends AppCompatActivity implements View.OnClickListener
     }
     @Override
     public void onPause(){
-        for (int i = 0; i < Favori_icerik_Adaptor.ViewHolder.mediaPlayerMap.size(); i++) {
+        for (int i = 0; i < Favori_icerik_Adaptor.ViewHolder.mediaPlayerMap.size(); i++) { // Sayfa durdulduğunda açık olan mediaplayerlerı durduruyorum.
 
         if (Favori_icerik_Adaptor.ViewHolder.mediaPlayerMap!=null){
         if(Favori_icerik_Adaptor.ViewHolder.mediaPlayerMap.get(i).isPlaying()) {
@@ -274,8 +268,7 @@ public class Favoriler extends AppCompatActivity implements View.OnClickListener
         }
         }
         finish();
-        //media player stops
-        super.onPause();
+         super.onPause();
     }
 
 

@@ -35,17 +35,12 @@ dependencies {
     //Glide Kütüphanesi. Resimleri gösteren kütüphane
     compile 'com.github.bumptech.glide:glide:4.7.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
-
     // Glide bitti
 
     compile 'org.adw.library:discrete-seekbar:1.0.1' //Progresbar Kütüphanesi
 
-    //  (Jsondan veri çekmek için kütüphane kalıbı)
-    compile 'org.apache.httpcomponents:httpclient-android:4.3.5.1'
+    compile 'org.apache.httpcomponents:httpclient-android:4.3.5.1'  //  (Jsondan veri transferi için kütüphane kalıbı)
 
-
-
-    //  bitti
 
 
 }

@@ -81,7 +81,7 @@ public class Kitaplik_icerik extends AppCompatActivity {
         setSupportActionBar(toolbar);
         TextView tobbar_txt= findViewById(R.id.tobbar_txt);
 
-        secilenkatagori();// Hani katagori seçilmişse id sini aldık ve id ye göre içerik getirceğiz
+        secilenkatagori();// Hangi katagori seçilmişse id sini aldık ve id ye göre içerik getirceğiz
         tobbar_txt.setText(Katagori.get("adi")); // Seçilen Katagorinin adını Tobbara yazdırdık.
 
 
@@ -143,7 +143,7 @@ public class Kitaplik_icerik extends AppCompatActivity {
             params.add(new BasicNameValuePair("user"  , "demo"));
             params.add(new BasicNameValuePair("pass"     , "demo"));
             params.add(new BasicNameValuePair("param"    , "categoryItems"));
-            params.add(new BasicNameValuePair("catid"    , Katagori.get("id")));
+            params.add(new BasicNameValuePair("catid"    , Katagori.get("id")));  // Katagori idsini categoryItems e göndererek katagoriye ait müzikleri getiriyoruz.
 
             String json = post.httpPost(getString(R.string.favori_url), "POST", params, 20000);
 
@@ -155,8 +155,7 @@ public class Kitaplik_icerik extends AppCompatActivity {
                 if (!json.equals("")) {
                     JSONObject cevap = new JSONObject(json);
                     HashMap servis;
-                    // Phone number is agin JSON Object
-                    JSONArray cast = cevap.getJSONArray("success");
+                     JSONArray cast = cevap.getJSONArray("success");
                     for (int i = 0; i < cast.length(); i++) {
                         servis = new HashMap<>();
                         JSONObject actor = cast.getJSONObject(i);
@@ -191,8 +190,7 @@ public class Kitaplik_icerik extends AppCompatActivity {
                         alertDialog.setCancelable(false);
                         alertDialog.setButton(RESULT_OK, "Tamam", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                // ksifre.setText("");
-                                Intent intent = new Intent(Kitaplik_icerik.this, Kitaplik.class);
+                                 Intent intent = new Intent(Kitaplik_icerik.this, Kitaplik.class);
                                 startActivity(intent);
                                 finish();
                             }
@@ -217,8 +215,7 @@ public class Kitaplik_icerik extends AppCompatActivity {
             }
         }
         finish();
-        //media player stops
-        super.onPause();
+         super.onPause();
     }
 
 }

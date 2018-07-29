@@ -49,7 +49,7 @@ public class Favori_icerik_Adaptor extends RecyclerView.Adapter<Favori_icerik_Ad
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-         public static Map<Integer, MediaPlayer> mediaPlayerMap = new HashMap<Integer, MediaPlayer>();
+         public static Map<Integer, MediaPlayer> mediaPlayerMap = new HashMap<Integer, MediaPlayer>(); // Map dizini oluşturuyorum. sayfa kapandığında sesler çalmaya devam etmemesi için burdan kontrol edeceğim.
 
 
         public TextView muzik_adi;
@@ -60,8 +60,7 @@ public class Favori_icerik_Adaptor extends RecyclerView.Adapter<Favori_icerik_Ad
         public ViewHolder(View view) {
             super(view);
 
-            //    card_view = (CardView)view.findViewById(R.id.card_view);
-            muzik_adi = view.findViewById(R.id.sarki_adi);
+             muzik_adi = view.findViewById(R.id.sarki_adi);
             muzik_img =  view.findViewById(R.id.sarki_resim);
             favorisec_img_btn =  view.findViewById(R.id.favorisec_img_btn);
             playpause_btn =  view.findViewById(R.id.playpause_btn);
@@ -99,8 +98,7 @@ public class Favori_icerik_Adaptor extends RecyclerView.Adapter<Favori_icerik_Ad
         holder.favorisec_img_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // Toast.makeText(mContext, muzikler.get(position).get("adi"), Toast.LENGTH_SHORT).show();
-                int count = db.favoridevarmi(muzikler.get(position).get(FAVORI_muzikid));// databasedeki favoride kayıtlımı
+                 int count = db.favoridevarmi(muzikler.get(position).get(FAVORI_muzikid));// databasedeki favoride kayıtlımı
                 if(count >0){//0 dan fazla ise favori var demektir.
                     holder.favorisec_img_btn.setImageResource(R.drawable.favori_pasif);
                     db.favori_sil(muzikler.get(position).get(FAVORI_muzikid));
@@ -126,7 +124,7 @@ public class Favori_icerik_Adaptor extends RecyclerView.Adapter<Favori_icerik_Ad
             public void onClick(View v) {
 
                 try {
-
+                    // kullanıcıyı bilgilendiriyorum. internetten indirmeden müziği dinlettiğim içiin ara belleğe alırken 2-3 saniylik müziğin uzunluğuna göre bekleme süresi var. bunu kullanıcya progresle bildiriyorum.
                     final ProgressDialog pDialog = new ProgressDialog(mContext);
                     pDialog.setTitle("Lütfen Bekleyin...");
                     pDialog.setMessage("Ses Dosyası Çekiliyor");
@@ -142,10 +140,10 @@ public class Favori_icerik_Adaptor extends RecyclerView.Adapter<Favori_icerik_Ad
                         holder.mediaPlayer = new MediaPlayer();
 
 
-                        holder.mediaPlayerMap.put(position, holder.mediaPlayer );
+                        holder.mediaPlayerMap.put(position, holder.mediaPlayer );// listedeki mediplayerlı  map dizinine  atıyorum. böylelikle active içinden kontrol edebiliyorum.
                         holder.mediaPlayer.setDataSource(muzikler.get(position).get(FAVORI_url).toString());
 
-                        float volume = (float) (1 - (Math.log(100 - holder.seekBar.getProgress()) / Math.log(100)));
+                        float volume = (float) (1 - (Math.log(100 - holder.seekBar.getProgress()) / Math.log(100)));  // Seekbar değeri kadar müziğin sesini açıoyu
                         holder.mediaPlayer.setVolume(volume, volume);
                         holder.mediaPlayer.setLooping(true);
                         holder.mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -159,7 +157,7 @@ public class Favori_icerik_Adaptor extends RecyclerView.Adapter<Favori_icerik_Ad
 
                                         int currentPosition = holder.mediaPlayer.getCurrentPosition();
 
-                                        if (currentPosition > 0)
+                                        if (currentPosition > 0) // Müzik başlamış ise progresi sonlandırıyorum.
                                             pDialog.dismiss();
 
                                     }
@@ -193,6 +191,7 @@ public class Favori_icerik_Adaptor extends RecyclerView.Adapter<Favori_icerik_Ad
 
             }
         });
+        // Seekbar ile her müziği kendi ses yüksekliğini ayarlayaibliyoruz.
         holder.seekBar.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
             @Override
             public int transform(int value) {

@@ -34,10 +34,10 @@ public class PostClass {
 
     public  String httpPost(String url, String method,List<NameValuePair> params,int time) {
 
-        //url: post yap�lacak adres
+        //url: post yapılacak adres
         //method: post mu get mi
-        //params:post edilecek veriler de�i�kenler
-        //time: sunucudan cevap gelmezse ka� sn sonra uygulama donmadan postun iptal edilece�i
+        //params:post edilecek veriler değişkenler
+        //time: sunucudan cevap gelmezse kaç sn sonra uygulama donmadan postun iptal edileceği
         try {
 
             if (method == "POST") {
@@ -87,7 +87,7 @@ public class PostClass {
             Log.e("Buffer Error", "Hata " + e.toString());
         }
 
-        return veri_string; // Ald���m�z cevab�n string halini geri d�n�yoruz
+        return veri_string; // Aldığımız yanıtı döndürüyoruz.
 
     }
 

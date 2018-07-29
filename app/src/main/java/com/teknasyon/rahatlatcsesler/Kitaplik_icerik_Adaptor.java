@@ -60,8 +60,7 @@ public class Kitaplik_icerik_Adaptor extends RecyclerView.Adapter<Kitaplik_iceri
         public ViewHolder(View view) {
             super(view);
 
-            //    card_view = (CardView)view.findViewById(R.id.card_view);
-            muzik_adi = view.findViewById(R.id.sarki_adi);
+             muzik_adi = view.findViewById(R.id.sarki_adi);
             muzik_img =  view.findViewById(R.id.sarki_resim);
             favorisec_img_btn =  view.findViewById(R.id.favorisec_img_btn);
             playpause_btn =  view.findViewById(R.id.playpause_btn);

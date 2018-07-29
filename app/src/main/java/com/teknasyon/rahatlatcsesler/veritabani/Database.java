@@ -11,7 +11,7 @@ import java.util.HashMap;
 
 public class Database extends SQLiteOpenHelper {
 
-	// Database Versiyonu Güncellediğimizde bu versiyon artaca
+	// Database Versiyonu Güncellediğimizde bu versiyon artacak
 	private static final int DATABASE_VERSION = 1;
 
 	// Database ADI
@@ -30,7 +30,7 @@ public class Database extends SQLiteOpenHelper {
 	}
 
 	@Override
-	public void onCreate(SQLiteDatabase db) {  // Databesi olusturuyoruz.Bu methodu biz cagirmiyoruz. Databese de obje olusturdugumuzda otamatik cagiriliyor.
+	public void onCreate(SQLiteDatabase db) {  // Databesi olusturuyoruz.
 
 
 
@@ -48,7 +48,6 @@ public class Database extends SQLiteOpenHelper {
 		//FAVORIEkle methodu ise adi ustunde Databese veri eklemek icin
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
-		//values.put(id, adi);
 		values.put(FAVORI_adi, adi);
 		values.put(FAVORI_url, url);
 		values.put(FAVORI_muzikid, muzik_id);
@@ -81,7 +80,6 @@ public class Database extends SQLiteOpenHelper {
 		}
 		cursor.close();
 		db.close();
-		// return kitap
 		return Muzikler;
 	}
 
@@ -94,7 +92,6 @@ public class Database extends SQLiteOpenHelper {
 		int rowCount = cursor.getCount();
 		db.close();
 		cursor.close();
-		// return row count
 		return rowCount;
 	}
 	public int favoridevarmi(String muzik_id) { //tabloda kac satir kayitli oldugunu geri doner
@@ -105,8 +102,7 @@ public class Database extends SQLiteOpenHelper {
 		int rowCount = cursor.getCount();
 		db.close();
 		cursor.close();
-		// return row count
-		return rowCount;
+ 		return rowCount;
 	}
 
 	public void favori_sil(String muzikid){ //id si belli olan row u silmek için
@@ -123,6 +119,7 @@ public class Database extends SQLiteOpenHelper {
 		db.close();
 	}
 
+	//DAtabes güncellendiğinde bu method çalışır
 	@Override
 	public void onUpgrade(SQLiteDatabase arg0, int arg1, int arg2) {
 		// TODO Auto-generated method stub
