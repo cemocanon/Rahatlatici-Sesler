@@ -11,7 +11,7 @@
 ![](https://github.com/cemocanon/Rahatlatici-Sesler/blob/master/Uygulama%20Tasar%C4%B1m%C4%B1/1.png?raw=true)
 ![](https://github.com/cemocanon/Rahatlatici-Sesler/blob/master/Uygulama%20Tasar%C4%B1m%C4%B1/2.png?raw=true) 
 
-###Ugulamada Kullanılan Kütüphaneler 
+### Ugulamada Kullanılan Kütüphaneler 
 
     //Glide Kütüphanesi. Resimleri gösteren kütüphane
         compile 'com.github.bumptech.glide:glide:4.7.1'
