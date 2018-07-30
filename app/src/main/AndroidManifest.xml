@@ -14,7 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Splash">
+        <activity android:name=".Splash"  android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,11 +23,14 @@
         </activity>
         <activity
             android:name=".Kitaplik"
+           android:screenOrientation="portrait"
             android:label="@string/title_activity_anasayfa"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Favoriler"
+             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Kitaplik_icerik"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
